@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User, Group
+from .views import ModifiedUser
 from rest_framework import serializers
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ['url', 'email', 'password']
+        model = ModifiedUser
+        fields = ['id', 'email', 'password', 'url']
