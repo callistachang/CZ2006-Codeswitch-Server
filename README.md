@@ -10,13 +10,9 @@ On the terminal, go to the root directory and install dependencies first if you 
 pip install -r requirements.txt
 ```
 
-Then, run the server on `http://127.0.0.1/8000/`:
+Then, run the server by clicking `run.bat`.
 
-```
-python manage.py runserver
-```
-
-You can use Postman to send API requests to the endpoints. You can check out `http://127.0.0.1/8000/` on the browser to check out which API endpoints are done so far.
+You can check out `http://127.0.0.1/8000/` on the browser to check out which API endpoints are done so far, and use Postman or whatever you want to send API requests to the endpoints. 
 
 To access our admin site, go to `http://127.0.0.1/8000/admin/` and enter the secret email and password.
 
