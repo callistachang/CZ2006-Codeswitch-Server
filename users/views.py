@@ -17,18 +17,26 @@ class UserViewSet(viewsets.ModelViewSet):
 
     GET /users                  Get list of all users.
     GET /users/<id>             Get information of a single user.
-    PUT /users/<id>             Update user information.
+    PATCH /users/<id>           Update user information.
+    
+    Example PATCH data:
+    {
+        "skills": [
+            "http://127.0.0.1:8000/skills/1",
+            "http://127.0.0.1:8000/skills/2"
+        ]
+    }
+
 
     POST /users/login           Login user.
     POST /users/create-account  Create user account.
     """
-    
     queryset = ModifiedUser.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-    @action(detail=False, url_path='create-account')
+    @action(methods=['post'], detail=False, url_path='create-account')
     @csrf_exempt
-    def create_account_view(self, request):
+    def create_account(self, request):
         """Verify a user's entered email and password while creating account.
 
         POST data --
@@ -56,9 +64,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return JsonResponse({'success': False, 'message': message, 'user': None})
 
-    @action(detail=False, url_path='login')
+    @action(methods=['post'], detail=False)
     @csrf_exempt
-    def login_view(self, request):
+    def login(self, request):
         """Verify a user's entered email and password while logging in.
 
         POST data --
@@ -68,7 +76,7 @@ class UserViewSet(viewsets.ModelViewSet):
         Returns --
             'success': boolean
             'message': string
-            'user': int // only if login successful
+            'user': int // None if login unsuccessful
         """
         input_email = request.POST.get('email')
         input_password = request.POST.get('password')
@@ -83,3 +91,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 message = 'Wrong password'
         
         return JsonResponse({'success': False, 'message': message, 'user': None})
+
+    @action(methods=['post'], detail=True, url_path='login')
+    @csrf_exempt
+    def update_skills(self, request):
+        pass

@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from skills.models import Skill
+
 class ModifiedUserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -27,6 +29,7 @@ class ModifiedUserManager(BaseUserManager):
 class ModifiedUser(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    skills = models.ManyToManyField(Skill)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
