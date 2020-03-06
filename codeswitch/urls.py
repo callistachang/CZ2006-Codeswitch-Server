@@ -3,9 +3,11 @@ from django.contrib import admin
 from rest_framework import routers
 
 import users.views
+import skills.views
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', users.views.UserViewSet)
+router.register(r'skills', skills.views.SkillViewSet)
 # router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
