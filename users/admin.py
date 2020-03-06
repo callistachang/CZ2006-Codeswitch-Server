@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .views import ModifiedUser
+from .models import ModifiedUser
 
 # Register your models here.
 
