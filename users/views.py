@@ -27,7 +27,6 @@ class UserViewSet(viewsets.ModelViewSet):
         ]
     }
 
-
     POST /users/login           Login user.
     POST /users/create-account  Create user account.
     """
@@ -38,6 +37,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @csrf_exempt
     def create_account(self, request):
         """Verify a user's entered email and password while creating account.
+
+        Only POST allowed.
 
         POST data --
             'email': string
@@ -68,6 +69,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @csrf_exempt
     def login(self, request):
         """Verify a user's entered email and password while logging in.
+
+        Only POST allowed.
 
         POST data --
             'email': string
