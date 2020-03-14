@@ -33,5 +33,4 @@ jobs:
     - name: Deploy to Heroku
       run: |
         git filter-branch -- --all
-        heroku run python manage.py migrate
         git push heroku HEAD:master -f
