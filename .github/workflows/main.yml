@@ -1,15 +1,15 @@
 name: Django CI
 
-on:
+on: 
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
     strategy:
       max-parallel: 4
       matrix:
@@ -28,3 +28,9 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+    - name: Add Remote Origin to Heroku
+      run: |
+        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+    - name: Deploy to Heroku
+      run: |
+        git push heroku HEAD:master -f

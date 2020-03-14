@@ -1,5 +1,7 @@
 # CodeSwitch Server
 
+![](https://github.com/callistachang/CodeSwitch-Server/workflows/main/badge.svg)
+
 Built with Django REST Framework 0.1.0. Deployed on http://codeswitch-rest-api.herokuapp.com.
 
 ## How to Run
