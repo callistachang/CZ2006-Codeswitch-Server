@@ -1,5 +1,6 @@
-from .views import ModifiedUser
 from rest_framework import serializers
+
+from .models import ModifiedUser
 from skills.serializers import SkillSerializer
 from skills.models import Skill
 
@@ -8,4 +9,4 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = ModifiedUser
-        fields = ['id', 'email', 'password', 'url', 'skills']
+        fields = ['id', 'email', 'password', 'skills', 'url']

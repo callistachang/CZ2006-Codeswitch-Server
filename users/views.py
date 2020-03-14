@@ -18,15 +18,8 @@ class UserViewSet(viewsets.ModelViewSet):
     GET /users                  Get list of all users.
     GET /users/<id>             Get information of a single user.
     PATCH /users/<id>           Update user information.
-    
-    Example PATCH data:
-    {
-        "skills": [
-            "http://127.0.0.1:8000/skills/1",
-            "http://127.0.0.1:8000/skills/2"
-        ]
-    }
 
+    Extra Actions:
     POST /users/login           Login user.
     POST /users/create-account  Create user account.
     """
@@ -95,7 +88,7 @@ class UserViewSet(viewsets.ModelViewSet):
         
         return JsonResponse({'success': False, 'message': message, 'user': None})
 
-    @action(methods=['post'], detail=True, url_path='login')
-    @csrf_exempt
-    def update_skills(self, request):
-        pass
+    # @action(methods=['post'], detail=True, url_path='login')
+    # @csrf_exempt
+    # def update_skills(self, request):
+    #     pass

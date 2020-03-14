@@ -1,8 +1,10 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django_countries.fields import CountryField
 
 from skills.models import Skill
+from interests.models import Interest
 
 class ModifiedUserManager(BaseUserManager):
     use_in_migrations = True
@@ -30,6 +32,8 @@ class ModifiedUser(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     skills = models.ManyToManyField(Skill)
+    interests = models.ManyToManyField(Interest)
+    location = CountryField(default=None, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
