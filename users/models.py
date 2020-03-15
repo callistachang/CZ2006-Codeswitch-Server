@@ -33,7 +33,7 @@ class ModifiedUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     skills = models.ManyToManyField(Skill)
     interests = models.ManyToManyField(Interest)
-    location = CountryField(default=None, null=True, blank=True)
+    # location = CountryField(default=None, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
