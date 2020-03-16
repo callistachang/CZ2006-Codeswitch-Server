@@ -6,12 +6,15 @@ import users.views
 import skills.views
 import interests.views
 import courses.views
+import jobs.views
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', users.views.UserViewSet)
 router.register(r'skills', skills.views.SkillViewSet)
 router.register(r'interests', interests.views.InterestViewSet)
 router.register(r'courses', courses.views.CourseViewSet)
+router.register(r'jobs', jobs.views.JobViewSet)
+router.register(r'saved_jobs', jobs.views.UserJobViewSet)
 # router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
