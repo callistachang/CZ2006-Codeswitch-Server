@@ -13,8 +13,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Job
-        fields = ['id', 'title', 'company', 'description', 'date_posted', 'application_src', 'picture_src',
-                  'recommended_courses', 'required_skills', 'interest_fields']
+        fields = '__all__'
 
 class UserJobSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=ModifiedUser.objects.all())

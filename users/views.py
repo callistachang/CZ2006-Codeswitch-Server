@@ -19,6 +19,8 @@ class UserViewSet(viewsets.ModelViewSet):
     GET /users/<id>             Get information of a single user.
     PATCH /users/<id>           Update user information.
 
+    * DON'T DIRECTLY POST TO /users. USE THE EXTRA ACTIONS SO THAT I CAN RUN THE CHECKS.
+
     Extra Actions:
     POST /users/login           Login user.
     POST /users/create-account  Create user account.

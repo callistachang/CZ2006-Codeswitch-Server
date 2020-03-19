@@ -5,4 +5,4 @@ from .models import Interest
 class InterestSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Interest
-        fields = ['id', 'name', 'url']
+        fields = '__all__'
