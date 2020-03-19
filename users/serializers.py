@@ -5,10 +5,10 @@ from skills.serializers import SkillSerializer
 from skills.models import Skill
 from interests.models import Interest
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     skills = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Skill.objects.all())
     interests = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Interest.objects.all())
     
     class Meta:
         model = ModifiedUser
-        fields = ['url', 'email', 'password', 'skills', 'interests']
+        fields = ['id', 'email', 'password', 'skills', 'interests']

@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 
 import re
+import json
 
 from utils import get_or_none
 
@@ -54,7 +55,8 @@ class UserViewSet(viewsets.ModelViewSet):
         if not user:
             if re.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", input_password):
                 user = get_user_model().objects.create_user(email=input_email, password=input_password)
-                return JsonResponse({'success': True, 'message': 'Account creation successful', 'user': user.id})
+                serialized_user = UserSerializer(user)
+                return JsonResponse({'success': True, 'message': 'Account creation successful', 'user': serialized_user.data})
             else:
                 message = 'Invalid password. Must have at least 8 characters, at least 1 uppercase letter, at least 1 lowercase letter and at least 1 number'
 
@@ -84,7 +86,8 @@ class UserViewSet(viewsets.ModelViewSet):
         user = get_or_none(ModifiedUser, email=input_email)
         if user:
             if user.check_password(input_password):
-                return JsonResponse({'success': True, 'message': 'Login successful', 'user': user.id})
+                serialized_user = UserSerializer(user)
+                return JsonResponse({'success': True, 'message': 'Login successful', 'user': serialized_user.data})
             else:
                 message = 'Wrong password'
         
