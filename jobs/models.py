@@ -12,10 +12,7 @@ class Job(models.Model):
     description = models.TextField()
     date_posted = models.DateField()
     application_src = models.URLField(max_length=200)
-    picture_src = models.URLField(blank=True, null=True, max_length=200)
-    recommended_courses = models.ManyToManyField(Course)
     required_skills = models.ManyToManyField(Skill)
-    interest_fields = models.ManyToManyField(Interest)
 
 class UserJob(models.Model):
     id = models.AutoField(primary_key=True)

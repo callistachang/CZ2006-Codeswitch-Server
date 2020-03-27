@@ -18,6 +18,8 @@ router.register(r'user_jobs', jobs.views.UserJobViewSet)
 # router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
+    path('generate_skills', jobs.views.generate_skills),
+    # path('import_db', jobs.views.import_db),
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))

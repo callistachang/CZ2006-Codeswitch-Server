@@ -7,9 +7,7 @@ from users.models import ModifiedUser
 from rest_framework import serializers
 
 class JobSerializer(serializers.ModelSerializer):
-    recommended_courses = serializers.PrimaryKeyRelatedField(many=True, queryset=Course.objects.all())
     required_skills = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Skill.objects.all())
-    interest_fields = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Interest.objects.all())
 
     class Meta:
         model = Job
@@ -17,8 +15,12 @@ class JobSerializer(serializers.ModelSerializer):
 
 class UserJobSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=ModifiedUser.objects.all())
-    job = serializers.PrimaryKeyRelatedField(queryset=Job.objects.all())
 
     class Meta:
         model = UserJob
         fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super(UserJobSerializer, self).to_representation(instance)
+        representation['job'] = JobSerializer(instance.job).data
+        return representation
