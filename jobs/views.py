@@ -2,9 +2,10 @@ from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.decorators import action
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 
 import re
 from datetime import datetime, timedelta
@@ -15,32 +16,50 @@ from .models import Job, UserJob
 from skills.models import Skill
 from .serializers import JobSerializer, UserJobSerializer
 
+class JobViewSet(viewsets.ModelViewSet):
+    """API endpoints pertaining to jobs.
+    """
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
+
+# Get jobs for specific user.
+class UserJobList(generics.ListAPIView):
+    serializer_class = UserJobSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        queryset = UserJob.objects.filter(user__id=user_id)
+        return queryset
+
+class JobQueryList(generics.ListAPIView):
+    serializer_class = JobSerializer
+    
+    def get_queryset(self):
+        queryset = Job.objects.all()
+        q = self.request.query_params.get('q', None)
+        if q is not None:
+            queryset = queryset.filter(Q(title__icontains=q) | Q(description__icontains=q)) # job
+        return queryset
+
+class UserJobViewSet(viewsets.ModelViewSet):
+    """API endpoints pertaining to user-jobs.
+    """
+    queryset = UserJob.objects.all()
+    serializer_class = UserJobSerializer
+
+
+
+# hello
 
 def generate_skills(request):
     job = Job.objects.get(id=1) 
 
-    i = 0
     for job in Job.objects.all():
         desc = job.description
         for skill in Skill.objects.all():
             if (skill.name.lower() in desc) or (skill.name in desc):
                 job.required_skills.add(skill.id)
         job.save()
-
-        print("#" * (i%5))
-        i += 1
-
-    # job.required_skills.add('SQL')
-    # job.save()
-
-    # i = 0
-    # for job in Job.objects.all():
-    #     for skill in Skill.objects.all():
-
-    #         if i == 5:
-    #             break
-    #         i += 1
-    #     print(job)
 
     return HttpResponseRedirect('')
 
@@ -50,7 +69,7 @@ def generate_date():
     return (start + (end - start) * random.random()).strftime("%Y-%m-%d")
 
 def import_db(request):
-    f = open('sadf.csv', 'r', encoding="mac_roman")
+    f = open('dump.csv', 'r', encoding="mac_roman")
     j = 0
     for line in f:
         line =  line.split('|')
@@ -68,7 +87,6 @@ def import_db(request):
         tmp.company = line[1].replace("'", "")
         tmp.description = tempDesc
         tmp.application_src = line[3].replace("'", "").replace("\n", '')
-        # tmp.date_posted = generate_date()
         tmp.save()
         if j == 1000:
             break
@@ -76,15 +94,3 @@ def import_db(request):
 
     f.close()
     return HttpResponseRedirect('')
-
-class JobViewSet(viewsets.ModelViewSet):
-    """API endpoints pertaining to jobs.
-    """
-    queryset = Job.objects.all()
-    serializer_class = JobSerializer
-
-class UserJobViewSet(viewsets.ModelViewSet):
-    """API endpoints pertaining to user-jobs.
-    """
-    queryset = UserJob.objects.all()
-    serializer_class = UserJobSerializer
