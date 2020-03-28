@@ -38,11 +38,7 @@ class JobQueryList(generics.ListAPIView):
         queryset = Job.objects.all()
         q = self.request.query_params.get('q', None)
         if q is not None:
-            queryset = queryset.filter(Q(title__icontains=q) | Q(description__icontains=q)) # job
-
-        for item in queryset:
-            item.test = "test"
-            item.save()
+            queryset = queryset.filter(Q(title__icontains=q) | Q(description__icontains=q) | Q(company__icontains=q)).order_by('-date_posted')
 
         return queryset
 
@@ -52,25 +48,25 @@ class SavedJobViewSet(viewsets.ModelViewSet):
     queryset = SavedJob.objects.all()
     serializer_class = SavedJobSerializer
 
-
-
-# hello
-
 def generate_skills(request):
-    job = Job.objects.get(id=1) 
+    # job = Job.objects.get(id=1) 
 
     for job in Job.objects.all():
-        desc = job.description
-        for skill in Skill.objects.all():
-            if (skill.name.lower() in desc) or (skill.name in desc):
-                job.required_skills.add(skill.id)
+        date = generate_date()
+        job.date_posted = date
         job.save()
+        # desc = job.description
+        # for skill in Skill.objects.all():
+        #     if (skill.name.lower() in desc) or (skill.name in desc):
+        #         job.required_skills.add(skill.id)
+        # job.save()
+        print("aaa")
 
     return HttpResponseRedirect('')
 
 def generate_date():
-    start = datetime(2020, 1, 1)
-    end = start + timedelta(days=365)
+    start = datetime(2019, 12, 1)
+    end = start + timedelta(days=115)
     return (start + (end - start) * random.random()).strftime("%Y-%m-%d")
 
 def import_db(request):
