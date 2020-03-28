@@ -14,7 +14,7 @@ router.register(r'skills', skills.views.SkillViewSet)
 # router.register(r'interests', interests.views.InterestViewSet)
 # router.register(r'courses', courses.views.CourseViewSet)
 router.register(r'jobs', jobs.views.JobViewSet)
-router.register(r'saved_jobs_dev', jobs.views.SavedJobViewSet)
+router.register(r'saved_jobs', jobs.views.SavedJobViewSet)
 
 urlpatterns = [
     # path('generate_skills', jobs.views.generate_skills),
@@ -22,6 +22,7 @@ urlpatterns = [
 
     # Get a list of jobs, pass in parameters as query
     path('query_jobs', jobs.views.JobQueryList.as_view()),
+    path('query_skill_group', skills.views.SkillInGroupList.as_view()),
 
     # Query saved_jobs to get only the user's
     path('saved_jobs/user/<int:user_id>', jobs.views.SavedJobList.as_view()),
