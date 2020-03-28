@@ -52,14 +52,14 @@ def generate_skills(request):
     # job = Job.objects.get(id=1) 
 
     for job in Job.objects.all():
-        date = generate_date()
-        job.date_posted = date
-        job.save()
-        # desc = job.description
-        # for skill in Skill.objects.all():
-        #     if (skill.name.lower() in desc) or (skill.name in desc):
-        #         job.required_skills.add(skill.id)
+        # date = generate_date()
+        # job.date_posted = date
         # job.save()
+        desc = job.description
+        for skill in Skill.objects.all():
+            if (skill.name.lower() in desc) or (skill.name in desc):
+                job.required_skills.add(skill.id)
+        job.save()
         print("aaa")
 
     return HttpResponseRedirect('')
