@@ -100,52 +100,55 @@ def get_courses(request):
 
     response = None
 
-    if mode == "search":
+    try:
+        if mode == "search":
+            
+            keyword = request.GET.get('keyword')
+            
+            URL = "https://public-api.ssg-wsg.sg/courses/directory"
         
-        keyword = request.GET.get('keyword')
-        
-        URL = "https://public-api.ssg-wsg.sg/courses/directory"
-    
-        HEADERS = {
-            "Authorization" : "Bearer " + get_access_token()
-        }
-        
-        PARAMS = {
-            "pageSize": 10,
-            "page" : 0 ,
-            "keyword" : keyword
-        }
-        
-        r = requests.get(url = URL, headers=HEADERS, params = PARAMS).json()
-        filteredCourses = getFilteredCourses(r)
+            HEADERS = {
+                "Authorization" : "Bearer " + get_access_token()
+            }
+            
+            PARAMS = {
+                "pageSize": 10,
+                "page" : 0 ,
+                "keyword" : keyword
+            }
+            
+            r = requests.get(url = URL, headers=HEADERS, params = PARAMS).json()
+            filteredCourses = getFilteredCourses(r)
 
-        response = {
-            'statusCode': 200,
-            'body': json.dumps(filteredCourses)
-        }
-    
-    elif mode=="details":
+            response = {
+                'statusCode': 200,
+                'body': filteredCourses
+            }
         
-        referenceNumber = request.GET.get('referenceNumber')
-        print(referenceNumber)
-        
-        URL = "https://public-api.ssg-wsg.sg/courses/directory/" + referenceNumber
-        # courses/directory/{course reference number}
-        
-        HEADERS = {
-            "Authorization" : "Bearer " + get_access_token()
-        }
-        
-        r = requests.get(url = URL, headers=HEADERS).json()
-        
-        filteredData = getFilteredData(r)
-        
-        response = {
-            'statusCode': 200,
-            'body': json.dumps(filteredData)
-        }
-    
-    return JsonResponse(response, safe=False)
+        elif mode=="details":
+            
+            referenceNumber = request.GET.get('referenceNumber')
+            print(referenceNumber)
+            
+            URL = "https://public-api.ssg-wsg.sg/courses/directory/" + referenceNumber
+            # courses/directory/{course reference number}
+            
+            HEADERS = {
+                "Authorization" : "Bearer " + get_access_token()
+            }
+            
+            r = requests.get(url = URL, headers=HEADERS).json()
+            
+            filteredData = getFilteredData(r)
+            
+            response = {
+                'statusCode': 200,
+                'body': filteredData
+            }
+        return JsonResponse(response, safe=False)
+
+    except:
+        return JsonResponse({"statusCode": 404})
         
 
 # event = {'queryStringParameters': {"searchOrDetails" : "search", "keyword" : "knitting"}}
