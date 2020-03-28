@@ -1,4 +1,4 @@
-from .models import Job, UserJob
+from .models import Job, SavedJob
 from skills.models import Skill
 from interests.models import Interest
 from courses.models import Course
@@ -13,14 +13,14 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         fields = '__all__'
 
-class UserJobSerializer(serializers.ModelSerializer):
+class SavedJobSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=ModifiedUser.objects.all())
 
     class Meta:
-        model = UserJob
+        model = SavedJob
         fields = '__all__'
 
     def to_representation(self, instance):
-        representation = super(UserJobSerializer, self).to_representation(instance)
+        representation = super(SavedJobSerializer, self).to_representation(instance)
         representation['job'] = JobSerializer(instance.job).data
         return representation

@@ -12,9 +12,9 @@ from datetime import datetime, timedelta
 import random
 
 from utils import get_or_none
-from .models import Job, UserJob
+from .models import Job, SavedJob
 from skills.models import Skill
-from .serializers import JobSerializer, UserJobSerializer
+from .serializers import JobSerializer, SavedJobSerializer
 
 class JobViewSet(viewsets.ModelViewSet):
     """API endpoints pertaining to jobs.
@@ -23,12 +23,12 @@ class JobViewSet(viewsets.ModelViewSet):
     serializer_class = JobSerializer
 
 # Get jobs for specific user.
-class UserJobList(generics.ListAPIView):
-    serializer_class = UserJobSerializer
+class SavedJobList(generics.ListAPIView):
+    serializer_class = SavedJobSerializer
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-        queryset = UserJob.objects.filter(user__id=user_id)
+        queryset = SavedJob.objects.filter(user__id=user_id)
         return queryset
 
 class JobQueryList(generics.ListAPIView):
@@ -39,13 +39,18 @@ class JobQueryList(generics.ListAPIView):
         q = self.request.query_params.get('q', None)
         if q is not None:
             queryset = queryset.filter(Q(title__icontains=q) | Q(description__icontains=q)) # job
+
+        for item in queryset:
+            item.test = "test"
+            item.save()
+
         return queryset
 
-class UserJobViewSet(viewsets.ModelViewSet):
+class SavedJobViewSet(viewsets.ModelViewSet):
     """API endpoints pertaining to user-jobs.
     """
-    queryset = UserJob.objects.all()
-    serializer_class = UserJobSerializer
+    queryset = SavedJob.objects.all()
+    serializer_class = SavedJobSerializer
 
 
 

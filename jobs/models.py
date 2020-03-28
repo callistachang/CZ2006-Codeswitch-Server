@@ -14,10 +14,10 @@ class Job(models.Model):
     application_src = models.URLField(max_length=200)
     required_skills = models.ManyToManyField(Skill)
 
-class UserJob(models.Model):
+class SavedJob(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(ModifiedUser, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    is_saved = models.BooleanField(default=False)
+    # is_saved = models.BooleanField(default=False)
     is_qualified = models.BooleanField()    # True if all(skill in user.skills for skill in job.required_skills) == True, else False
     has_applied = models.BooleanField(default=False)
