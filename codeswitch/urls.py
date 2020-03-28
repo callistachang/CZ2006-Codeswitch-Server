@@ -21,6 +21,7 @@ urlpatterns = [
     # path('import_db', jobs.views.import_db),
 
     # Get a list of jobs, pass in parameters as query
+    path('courses', courses.views.get_courses),
     path('query_jobs', jobs.views.JobQueryList.as_view()),
     path('query_skill_group', skills.views.SkillInGroupList.as_view()),
 
