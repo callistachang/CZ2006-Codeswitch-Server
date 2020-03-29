@@ -28,7 +28,7 @@ class SavedJobList(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-        queryset = SavedJob.objects.filter(user__id=user_id)
+        queryset = SavedJob.objects.filter(user__id=user_id).order_by('has_applied')
         return queryset
 
 class JobQueryList(generics.ListAPIView):
