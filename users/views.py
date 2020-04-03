@@ -81,7 +81,7 @@ class UserViewSet(viewsets.ModelViewSet):
         input_email = request.POST.get('email')
         input_password = request.POST.get('password')
 
-        message = 'Email not found'
+        message = 'Username not found'
 
         user = get_or_none(ModifiedUser, email=input_email)
         if user:
